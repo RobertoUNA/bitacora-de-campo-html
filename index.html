@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitácora de campo</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+html,body,#dc-root,#dc-root>.sc-host{height:100%;min-height:100vh;margin:0;background-color:#27312f}
+.stage{box-sizing:border-box;min-height:100vh;height:100vh;padding:12px 16px 10px;display:flex;flex-direction:column;justify-content:space-between;background-color:#2f3b39;background-image:radial-gradient(circle at 50% 30%,#3d4c49,#27312f 70%)}
+.book{position:relative;flex:1;display:flex;flex-direction:column;width:100%;min-height:0;margin:0 auto;padding:12px;box-sizing:border-box;background:#1b2a47;border-radius:6px;box-shadow:0 20px 44px rgba(0,0,0,.5)}
+.sp{display:flex;flex-wrap:wrap;width:100%;flex:1;min-height:0}
+.pg{position:relative;flex:1 1 380px;min-height:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background-color:#f7f3e6;background-image:linear-gradient(rgba(70,130,180,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(70,130,180,.22) 1px,transparent 1px);background-size:28px 28px}
+.pgL{padding:24px 36px 36px 64px;box-shadow:inset -34px 0 30px -26px rgba(40,30,10,.4)}
+.pgR{padding:24px 64px 36px 36px;box-shadow:inset 34px 0 30px -26px rgba(40,30,10,.4)}
+.pgL::after{content:"";position:absolute;top:0;bottom:0;left:48px;width:2px;background:#c0504d}
+.pgR::after{content:"";position:absolute;top:0;bottom:0;right:48px;width:2px;background:#c0504d}
+.cover{background-color:#24365a;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 6px);box-shadow:inset -34px 0 30px -26px rgba(0,0,0,.5)}
+.cover::after{display:none}
+.label{background:#f7f3e6;border:3px double #24365a;padding:52px 44px;width:82%;max-width:560px;box-sizing:border-box;text-align:center;transform:rotate(-1.5deg);box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.ct{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(56px,5vw,78px);line-height:.95;color:#24365a;margin:10px 0 6px}
+.cs{font-family:'Caveat',cursive;font-size:clamp(26px,2.2vw,36px);color:#3d3d3d;margin-bottom:12px}
+.wrap{position:relative;width:92%;height:88%;max-width:none;display:flex;flex-direction:column;justify-content:center}
+.p{position:relative;flex:1;display:flex;flex-direction:column;margin:0;background:#fffdf6;padding:18px 20px 22px;box-sizing:border-box;box-shadow:0 2px 0 #cfc7b0,0 8px 14px rgba(60,50,30,.22)}
+.p::before{content:"";position:absolute;top:-12px;left:50%;width:120px;height:26px;margin-left:-60px;background:rgba(236,214,140,.75);transform:rotate(-2deg)}
+.ph{flex:1;min-height:220px;background:repeating-linear-gradient(45deg,#e4ebe1 0 6px,#dbe4d8 6px 12px);display:flex;align-items:center;justify-content:center;color:#24365a}
+.ph svg{width:62%;height:62%}
+.fn{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.05vw,15px);color:#7a2e2e;margin-top:12px;letter-spacing:.06em}
+.ft{font-family:'Caveat',cursive;font-size:clamp(32px,2.6vw,44px);line-height:1.05;color:#24365a;margin-top:2px}
+.fd{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.05vw,15px);color:#3d3d3d;margin-top:4px;line-height:1.4}
+.p .fn,.p .ft,.p .fd{max-width:52%}
+.note{position:absolute;right:-16px;bottom:-16px;width:46%;min-width:210px;height:38%;min-height:140px;box-sizing:border-box;padding:16px 20px;background:#fbe98a;color:#3d3a1a;font-family:'Caveat',cursive;font-size:clamp(24px,2vw,32px);line-height:1.15;transform:rotate(2.5deg);box-shadow:0 6px 12px rgba(60,50,30,.3)}
+.num{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3d3d3d}
+.spiral{position:absolute;top:12px;bottom:12px;left:50%;width:36px;margin-left:-18px;pointer-events:none;background-image:radial-gradient(circle at 50% 50%,#1f1f1f 0 6px,rgba(0,0,0,.25) 7px,transparent 9px);background-size:36px 44px;background-position:0 22px}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:14px;min-height:40px;padding:0 22px;background:#f7f3e6;color:#24365a;border:2px solid #24365a;cursor:pointer}
+.btn:hover{background:#fbe98a}
+.btn:disabled{opacity:.45;cursor:default;background:#f7f3e6}
+@media (max-width:768px){
+.stage{padding:8px 8px 6px}
+.book{padding:8px}
+.sp{flex-wrap:nowrap}
+.sp>.pg:nth-child(2){display:none}
+.pg{flex:1 1 100%;width:100%}
+.pgL,.pgR{padding:20px 18px 34px 42px;box-shadow:inset 24px 0 24px -20px rgba(40,30,10,.35)}
+.pgL::after,.pgR::after{left:30px;right:auto}
+.spiral{left:6px;margin-left:0;width:24px;background-size:24px 36px;background-position:0 18px;top:8px;bottom:8px}
+.wrap{width:95%;height:90%}
+.note{width:50%;min-width:140px;height:34%;min-height:110px;right:-8px;bottom:-10px;padding:12px 14px;font-size:clamp(20px,4.5vw,26px)}
+.label{width:90%;padding:32px 24px}
+.btn{padding:0 14px;font-size:13px}
+}
+</style>
+</helmet>
+<div class="stage">
+<div class="book">
+<sc-if value="{{s0}}" hint-placeholder-val="{{ true }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL cover"><div class="label"><div class="fn" style="color:#7a2e2e">CUADERNO DE CIENCIAS · VOL. 3</div><div class="ct">Bitácora de campo</div><div class="cs">Observaciones y especímenes</div><div class="fd">8 registros · pasa la página →</div></div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.4deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 90C20 70 18 35 50 10c32 25 30 60 0 80z"></path><path d="M50 90V25M50 70L33 55M50 58L68 44M50 46L36 34"></path></svg></div><div class="fn">FIG. 01</div><div class="ft">Hoja y nervadura</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">1</div></div></sc-if></div></sc-if>
+<sc-if value="{{s1}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.2deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="38"></circle><circle cx="42" cy="46" r="12"></circle><circle cx="42" cy="46" r="4"></circle><path d="M66 62q8 4 10-4M60 30q6-6 10 2"></path></svg></div><div class="fn">FIG. 02</div><div class="ft">Célula al microscopio</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">2</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-0.8deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 8L78 34 66 90H34L22 34z"></path><path d="M22 34H78M50 8L40 34 34 90M50 8L60 34 66 90"></path></svg></div><div class="fn">FIG. 03</div><div class="ft">Cristal de cuarzo</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">3</div></div></sc-if></div></sc-if>
+<sc-if value="{{s2}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.6deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 52c-4-4-10-2-10 4s10 10 16 6 6-16-2-22-24-4-26 10 6 28 24 30 36-8 30-26"></path></svg></div><div class="fn">FIG. 04</div><div class="ft">Concha en espiral</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">4</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.2deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M42 10h16M44 10v26L18 82q-4 10 6 10h52q10 0 6-10L56 36V10"></path><path d="M30 64h40"></path></svg></div><div class="fn">FIG. 05</div><div class="ft">Matraz de ensayo</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">5</div></div></sc-if></div></sc-if>
+<sc-if value="{{s3}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(0.9deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="22"></circle><ellipse cx="50" cy="50" rx="44" ry="12" transform="rotate(-20 50 50)"></ellipse></svg></div><div class="fn">FIG. 06</div><div class="ft">Planeta anillado</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">6</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.5deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 50L24 28M50 50L78 30M50 50L50 84M78 30L90 52"></path><circle cx="50" cy="50" r="10"></circle><circle cx="24" cy="28" r="7"></circle><circle cx="78" cy="30" r="7"></circle><circle cx="50" cy="84" r="7"></circle><circle cx="90" cy="52" r="5"></circle></svg></div><div class="fn">FIG. 07</div><div class="ft">Modelo molecular</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">7</div></div></sc-if></div></sc-if>
+<sc-if value="{{s4}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.1deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 92V40M50 60C30 60 24 46 26 34c16 0 24 8 24 26zM50 46C66 46 74 36 72 22 58 22 50 30 50 46zM20 92h60"></path></svg></div><div class="fn">FIG. 08</div><div class="ft">Germinación</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">8</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap" style="text-align:center"><div class="ct" style="color:#24365a;font-size:56px">Fin del registro</div><div class="cs" style="color:#3d3d3d">[espacio para nuevas observaciones]</div></div></div></sc-if></div></sc-if>
+<div class="spiral"></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin-top:10px;flex-shrink:0">
+<button class="btn" onClick="{{ prev }}" disabled="{{ prevOff }}">← Anterior</button>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#f7f3e6">{{ label }}</div>
+<button class="btn" onClick="{{ next }}" disabled="{{ nextOff }}">Siguiente →</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":920}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+const mobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+this.state = { page: 0, isMobile: mobile };
+this.onResize = () => {
+const m = window.innerWidth <= 768;
+if (m !== this.state.isMobile) {
+this.setState({
+isMobile: m,
+page: m ? (this.state.page || 0) : Math.floor((this.state.page || 0) / 2) * 2
+});
+}
+};
+}
+componentDidMount() {
+if (typeof window !== 'undefined') {
+window.addEventListener('resize', this.onResize);
+this.onResize();
+}
+}
+componentWillUnmount() {
+if (typeof window !== 'undefined') {
+window.removeEventListener('resize', this.onResize);
+}
+}
+renderVals() {
+const p = this.state.page || 0;
+const m = !!this.state.isMobile;
+const s = Math.floor(p / 2);
+return {
+s0: s === 0, s1: s === 1, s2: s === 2, s3: s === 3, s4: s === 4,
+showL: !m || (p % 2 === 0),
+showR: !m || (p % 2 === 1),
+label: m ? ('Página ' + (p + 1) + ' / 10') : ('Páginas ' + (s + 1) + ' / 5'),
+prevOff: m ? p === 0 : s === 0,
+nextOff: m ? p === 9 : s === 4,
+prev: () => {
+const cur = this.state.page || 0;
+const mob = !!this.state.isMobile;
+this.setState({ page: Math.max(0, mob ? cur - 1 : (Math.floor(cur / 2) - 1) * 2) });
+},
+next: () => {
+const cur = this.state.page || 0;
+const mob = !!this.state.isMobile;
+this.setState({ page: Math.min(mob ? 9 : 8, mob ? cur + 1 : (Math.floor(cur / 2) + 1) * 2) });
+}
+};
+}
+}
+</script>
+</body>
+</html>
