@@ -1,4 +1,4 @@
-# Bitácora de campo
+# Bitácora de evidencias — Ciencias Naturales
 
 Cuaderno digital interactivo organizado por capítulos para cada actividad, con rutas limpias pensadas para generar un código QR por actividad.
 

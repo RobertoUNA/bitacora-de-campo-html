@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bitácora de campo</title>
+<title>Bitácora de evidencias</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2324365a'/%3E%3Crect x='14' y='12' width='36' height='40' rx='3' fill='%23f7f3e6'/%3E%3Cpath d='M22 24h20M22 32h20M22 40h14' stroke='%2324365a' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
     min-height:100vh;
     height:100vh;
     height:100dvh;
-    padding:12px 16px 10px;
+    padding:4px 8px 6px;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
@@ -31,10 +31,10 @@
     width:100%;
     min-height:0;
     margin:0 auto;
-    padding:12px;
+    padding:6px;
     background:#1b2a47;
     border-radius:6px;
-    box-shadow:0 20px 44px rgba(0,0,0,.5);
+    box-shadow:0 16px 36px rgba(0,0,0,.5);
   }
   .sp{
     display:flex;
@@ -61,17 +61,17 @@
     background-size:28px 28px;
   }
   .pgL{
-    padding:22px 34px 36px 64px;
-    box-shadow:inset -34px 0 30px -26px rgba(40,30,10,.4);
+    padding:14px 20px 24px 36px;
+    box-shadow:inset -28px 0 26px -22px rgba(40,30,10,.38);
   }
   .pgR{
-    padding:22px 64px 36px 34px;
-    box-shadow:inset 34px 0 30px -26px rgba(40,30,10,.4);
+    padding:14px 36px 24px 20px;
+    box-shadow:inset 28px 0 26px -22px rgba(40,30,10,.38);
   }
   .pgL::after{
     content:"";
     position:absolute;
-    top:0;bottom:0;left:48px;
+    top:0;bottom:0;left:26px;
     width:2px;
     background:#c0504d;
     pointer-events:none;
@@ -79,7 +79,7 @@
   .pgR::after{
     content:"";
     position:absolute;
-    top:0;bottom:0;right:48px;
+    top:0;bottom:0;right:26px;
     width:2px;
     background:#c0504d;
     pointer-events:none;
@@ -87,35 +87,58 @@
   .cover{
     background-color:#24365a;
     background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 6px);
-    box-shadow:inset -34px 0 30px -26px rgba(0,0,0,.5);
+    box-shadow:inset -28px 0 26px -22px rgba(0,0,0,.5);
   }
   .cover::after{display:none}
   .label{
     background:#f7f3e6;
     border:3px double #24365a;
-    padding:44px 38px;
-    width:84%;
+    padding:36px 34px;
+    width:88%;
     max-width:540px;
     text-align:center;
-    transform:rotate(-1.5deg);
+    transform:rotate(-1.2deg);
     box-shadow:0 6px 14px rgba(0,0,0,.35);
   }
   .ct{
     font-family:'Caveat',cursive;
     font-weight:700;
-    font-size:clamp(50px,4.8vw,74px);
-    line-height:.95;
+    font-size:clamp(46px,4.5vw,68px);
+    line-height:.96;
     color:#24365a;
-    margin:10px 0 6px;
+    margin:0;
   }
   .cs{
     font-family:'Caveat',cursive;
     font-size:clamp(24px,2.1vw,34px);
     color:#3d3d3d;
-    margin-bottom:12px;
+    margin-top:6px;
+  }
+  .cover-subject{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(12px,1.1vw,15px);
+    color:#7a2e2e;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-top:10px;
+  }
+  .cover-author{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:clamp(26px,2.2vw,34px);
+    color:#24365a;
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1.5px solid rgba(36,54,90,.28);
+  }
+  .cover-meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(11px,0.95vw,13px);
+    color:#555;
+    margin-top:10px;
   }
   .cover-actions{
-    margin-top:16px;
+    margin-top:14px;
     display:flex;
     justify-content:center;
     gap:10px;
@@ -135,8 +158,8 @@
 
   .wrap{
     position:relative;
-    width:94%;
-    height:90%;
+    width:100%;
+    height:100%;
     min-width:0;
     min-height:0;
     display:flex;
@@ -152,24 +175,25 @@
     flex-direction:column;
     margin:0;
     background:#fffdf6;
-    padding:16px 18px 18px;
-    box-shadow:0 2px 0 #cfc7b0,0 8px 14px rgba(60,50,30,.22);
+    padding:10px 10px 9px;
+    box-shadow:0 2px 0 #cfc7b0,0 6px 12px rgba(60,50,30,.2);
     transition:box-shadow .2s ease;
   }
   .wrap.is-focused .p{
-    box-shadow:0 0 0 2px rgba(122,46,46,.55),0 2px 0 #cfc7b0,0 12px 22px rgba(60,50,30,.28);
+    box-shadow:0 0 0 2px rgba(122,46,46,.5),0 2px 0 #cfc7b0,0 10px 18px rgba(60,50,30,.26);
   }
   .p::before{
     content:"";
     position:absolute;
-    top:-12px;
+    top:-10px;
     left:50%;
-    width:120px;
-    height:24px;
-    margin-left:-60px;
+    width:108px;
+    height:20px;
+    margin-left:-54px;
     background:rgba(236,214,140,.75);
-    transform:rotate(-2deg);
+    transform:rotate(-1.5deg);
     pointer-events:none;
+    z-index:2;
   }
 
   .ph{
@@ -177,12 +201,12 @@
     flex:1;
     min-width:0;
     min-height:0;
-    background:repeating-linear-gradient(45deg,#e4ebe1 0 6px,#dbe4d8 6px 12px);
+    background:transparent;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    padding:8px;
+    padding:0;
     cursor:zoom-in;
     user-select:none;
     touch-action:pan-y;
@@ -194,69 +218,40 @@
     height:auto;
     object-fit:contain;
     display:block;
-    border-radius:2px;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
     background:#fff;
+    border:1px solid rgba(36,54,90,.12);
   }
-  .ph-top-bar{
-    position:absolute;
-    top:8px;
-    right:8px;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    z-index:2;
-  }
-  .ph-pill{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    line-height:1;
-    padding:6px 9px;
-    background:rgba(255,253,246,.92);
-    color:#24365a;
-    border:1.5px solid rgba(36,54,90,.45);
-    border-radius:3px;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
-  }
-  .ph-zoom{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    cursor:pointer;
-    transition:background .15s;
-  }
-  .ph-zoom:hover{background:#fbe98a}
   .ph-nav{
     position:absolute;
     top:50%;
     transform:translateY(-50%);
-    width:34px;
-    height:34px;
+    width:30px;
+    height:30px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(255,253,246,.9);
+    background:rgba(255,253,246,.88);
     color:#24365a;
-    border:1.5px solid #24365a;
+    border:1.5px solid rgba(36,54,90,.65);
     border-radius:50%;
     font-family:'IBM Plex Mono',monospace;
-    font-size:18px;
+    font-size:17px;
     line-height:1;
     cursor:pointer;
     z-index:2;
-    box-shadow:0 2px 6px rgba(0,0,0,.2);
-    transition:background .15s,transform .15s;
+    box-shadow:0 2px 6px rgba(0,0,0,.18);
+    transition:background .15s;
   }
   .ph-nav:hover{background:#fbe98a}
-  .ph-nav.prev{left:8px}
-  .ph-nav.next{right:8px}
+  .ph-nav.prev{left:6px}
+  .ph-nav.next{right:6px}
 
   .card-meta{
     display:flex;
-    align-items:flex-end;
+    align-items:center;
     justify-content:space-between;
-    gap:12px;
-    margin-top:10px;
+    gap:10px;
+    margin-top:8px;
     flex-shrink:0;
   }
   .card-titles{
@@ -265,33 +260,40 @@
   }
   .fn{
     font-family:'IBM Plex Mono',monospace;
-    font-size:clamp(11px,1vw,14px);
+    font-size:clamp(11px,0.95vw,13px);
     color:#7a2e2e;
     letter-spacing:.06em;
   }
   .ft{
     font-family:'Caveat',cursive;
-    font-size:clamp(30px,2.5vw,42px);
+    font-size:clamp(24px,2.1vw,32px);
     line-height:1.02;
     color:#24365a;
-    margin-top:2px;
+    margin-top:1px;
     word-break:break-word;
   }
   .fd{
     font-family:'IBM Plex Mono',monospace;
-    font-size:clamp(12px,1vw,14px);
+    font-size:clamp(11px,0.95vw,13px);
     color:#3d3d3d;
     margin-top:4px;
     line-height:1.4;
   }
 
-  .thumbs{
+  .card-actions{
     display:flex;
     align-items:center;
-    gap:5px;
+    gap:6px;
     flex-wrap:wrap;
     justify-content:flex-end;
     flex-shrink:0;
+  }
+  .thumbs{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
   }
   .thumb-dot{
     font-family:'IBM Plex Mono',monospace;
@@ -312,27 +314,45 @@
     color:#f7f3e6;
     border-color:#24365a;
   }
+  .zoom-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    height:24px;
+    padding:0 8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    background:#f7f3e6;
+    color:#24365a;
+    border:1.5px solid rgba(36,54,90,.55);
+    border-radius:3px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .zoom-btn:hover{background:#fbe98a}
+  .zoom-btn svg{flex-shrink:0}
 
   .num{
     position:absolute;
-    bottom:12px;
+    bottom:6px;
     left:0;right:0;
     text-align:center;
     font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
+    font-size:11px;
     color:#3d3d3d;
     pointer-events:none;
   }
   .spiral{
     position:absolute;
-    top:12px;bottom:12px;
+    top:8px;bottom:8px;
     left:50%;
-    width:36px;
-    margin-left:-18px;
+    width:28px;
+    margin-left:-14px;
     pointer-events:none;
-    background-image:radial-gradient(circle at 50% 50%,#1f1f1f 0 6px,rgba(0,0,0,.25) 7px,transparent 9px);
-    background-size:36px 44px;
-    background-position:0 22px;
+    background-image:radial-gradient(circle at 50% 50%,#1f1f1f 0 5px,rgba(0,0,0,.25) 6px,transparent 8px);
+    background-size:28px 40px;
+    background-position:0 18px;
     z-index:3;
   }
 
@@ -341,15 +361,15 @@
     flex-wrap:wrap;
     justify-content:center;
     align-items:center;
-    gap:12px;
-    margin-top:10px;
+    gap:10px;
+    margin-top:6px;
     flex-shrink:0;
   }
   .btn{
     font-family:'IBM Plex Mono',monospace;
-    font-size:14px;
-    min-height:38px;
-    padding:0 18px;
+    font-size:13px;
+    min-height:34px;
+    padding:0 16px;
     background:#f7f3e6;
     color:#24365a;
     border:2px solid #24365a;
@@ -364,17 +384,17 @@
   }
   .page-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:13px;
+    font-size:12px;
     color:#f7f3e6;
     text-align:center;
-    min-width:130px;
+    min-width:120px;
   }
 
   /* End page chapter directory */
   .end-wrap{
-    width:90%;
+    width:96%;
     max-width:520px;
-    max-height:90%;
+    max-height:94%;
     overflow-y:auto;
     text-align:center;
     display:flex;
@@ -586,29 +606,31 @@
   .lb-nav.next{right:8px}
 
   @media (max-width:768px){
-    .stage{padding:8px 8px 6px}
-    .book{padding:8px}
+    .stage{padding:2px 3px 4px}
+    .book{padding:4px;border-radius:4px}
     .pg{flex:1 1 100%;width:100%}
     .pgL,.pgR{
-      padding:18px 16px 32px 38px;
-      box-shadow:inset 24px 0 24px -20px rgba(40,30,10,.35);
+      padding:10px 8px 22px 26px;
+      box-shadow:inset 18px 0 18px -16px rgba(40,30,10,.32);
     }
-    .pgL::after,.pgR::after{left:28px;right:auto}
+    .pgL::after,.pgR::after{left:20px;right:auto}
     .spiral{
-      left:6px;margin-left:0;width:24px;
-      background-size:24px 36px;background-position:0 18px;
-      top:8px;bottom:8px;
+      left:3px;margin-left:0;width:18px;
+      background-size:18px 34px;background-position:0 16px;
+      top:6px;bottom:6px;
     }
-    .wrap{width:96%;height:92%}
-    .p{padding:12px 12px 14px}
-    .label{width:92%;padding:30px 20px}
-    .card-meta{flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px}
-    .thumbs{justify-content:flex-start}
-    .controls{gap:8px;margin-top:8px}
-    .btn{padding:0 12px;font-size:13px;min-height:36px}
-    .page-label{min-width:auto;font-size:12px}
+    .p{padding:7px 7px 8px}
+    .p::before{top:-8px;width:88px;height:16px;margin-left:-44px}
+    .label{width:94%;padding:28px 18px}
+    .card-meta{gap:8px;margin-top:6px}
+    .ft{font-size:clamp(22px,6vw,28px)}
+    .zoom-text{display:none}
+    .zoom-btn{width:26px;padding:0}
+    .controls{gap:5px;margin-top:5px}
+    .btn{padding:0 9px;font-size:12px;min-height:33px}
+    .page-label{min-width:auto;font-size:11px}
     .end-list{grid-template-columns:1fr}
-    .ph-nav{width:30px;height:30px;font-size:16px}
+    .ph-nav{width:28px;height:28px;font-size:16px}
   }
 </style>
 </head>
@@ -659,7 +681,7 @@
       id: 2,
       code: 'ACTIVIDAD 02',
       title: 'Trabajo en grupo',
-      tilt: -1.3,
+      tilt: -0.6,
       photos: [
         '/Actividades/Actividad 2/Actividad 2_1.jpg',
         '/Actividades/Actividad 2/Actividad 2_2.jpg',
@@ -670,7 +692,7 @@
       id: 3,
       code: 'ACTIVIDAD 03',
       title: 'Actividad en grupo',
-      tilt: 1.1,
+      tilt: 0.5,
       photos: [
         '/Actividades/actividad 3/actividad 3_1.jpg'
       ]
@@ -679,7 +701,7 @@
       id: 4,
       code: 'ACTIVIDAD 04',
       title: 'Exposición',
-      tilt: -0.8,
+      tilt: -0.4,
       photos: [
         '/Actividades/actividad 4/actividad 4_1.jpg'
       ]
@@ -688,7 +710,7 @@
       id: 5,
       code: 'ACTIVIDAD 05',
       title: 'Rapidez y Velocidad',
-      tilt: 1.4,
+      tilt: 0.6,
       photos: [
         '/Actividades/actividad 5/actividad 5_1.jpg',
         '/Actividades/actividad 5/actividad 5_2.jpg'
@@ -698,7 +720,7 @@
       id: 6,
       code: 'ACTIVIDAD 06',
       title: 'Desplazamiento',
-      tilt: -1.1,
+      tilt: -0.5,
       photos: [
         '/Actividades/actividad 6/actividad 6(1)_1.jpg',
         '/Actividades/actividad 6/actividad 6(1)_2.jpg',
@@ -711,7 +733,7 @@
       id: 7,
       code: 'ACTIVIDAD 07',
       title: 'Conversiones',
-      tilt: 0.9,
+      tilt: 0.4,
       photos: [
         '/Actividades/actividad 7/actividad 7_1.jpg',
         '/Actividades/actividad 7/actividad 7_2.jpg',
@@ -723,7 +745,7 @@
       id: 8,
       code: 'ACTIVIDAD 08',
       title: 'Simulador',
-      tilt: -1.4,
+      tilt: -0.6,
       photos: [
         '/Actividades/actividad 8/actividad 8_1.jpg',
         '/Actividades/actividad 8/actividad 8_2.jpg'
@@ -733,7 +755,7 @@
       id: 10,
       code: 'ACTIVIDAD 10',
       title: 'Laboratorio',
-      tilt: 1.0,
+      tilt: 0.5,
       photos: [
         '/Actividades/actividad 10/actividad 10 Laboratorio _1.jpg',
         '/Actividades/actividad 10/actividad 10 Laboratorio _2.jpg'
@@ -779,6 +801,35 @@
     return encodeURI(ASSET_BASE + path);
   }
 
+  function createSearchIconSvg() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('width', '13');
+    svg.setAttribute('height', '13');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2.2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+
+    var circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', '11');
+    circle.setAttribute('cy', '11');
+    circle.setAttribute('r', '7');
+
+    var line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', '21');
+    line.setAttribute('y1', '21');
+    line.setAttribute('x2', '16.65');
+    line.setAttribute('y2', '16.65');
+
+    svg.appendChild(circle);
+    svg.appendChild(line);
+    return svg;
+  }
+
   function getActivityById(id) {
     for (var i = 0; i < ACTIVITIES.length; i++) {
       if (ACTIVITIES[i].id === id) return ACTIVITIES[i];
@@ -818,8 +869,8 @@
   function updateDocumentTitle(activityId) {
     var act = activityId ? getActivityById(activityId) : null;
     document.title = act
-      ? 'Actividad ' + act.id + ': ' + act.title + ' · Bitácora de campo'
-      : 'Bitácora de campo';
+      ? 'Actividad ' + act.id + ': ' + act.title + ' · Bitácora de evidencias'
+      : 'Bitácora de evidencias';
   }
 
   function syncUrl(activityId, replaceOnly) {
@@ -894,20 +945,24 @@
     var label = document.createElement('div');
     label.className = 'label';
 
-    var topCode = document.createElement('div');
-    topCode.className = 'fn';
-    topCode.textContent = 'CUADERNO DE CIENCIAS · VOL. 3';
-
     var title = document.createElement('div');
     title.className = 'ct';
-    title.textContent = 'Bitácora de campo';
+    title.textContent = 'Bitácora de evidencias';
+
+    var subject = document.createElement('div');
+    subject.className = 'cover-subject';
+    subject.textContent = 'Ciencias Naturales';
 
     var sub = document.createElement('div');
     sub.className = 'cs';
     sub.textContent = 'Registro de actividades';
 
+    var author = document.createElement('div');
+    author.className = 'cover-author';
+    author.textContent = 'Génesis Corea Avilés';
+
     var count = document.createElement('div');
-    count.className = 'fd';
+    count.className = 'cover-meta';
     count.textContent = ACTIVITIES.length + ' capítulos · pasa la página →';
 
     var actions = document.createElement('div');
@@ -930,9 +985,10 @@
     actions.appendChild(openChaptersBtn);
     actions.appendChild(startBtn);
 
-    label.appendChild(topCode);
     label.appendChild(title);
+    label.appendChild(subject);
     label.appendChild(sub);
+    label.appendChild(author);
     label.appendChild(count);
     label.appendChild(actions);
     pg.appendChild(label);
@@ -948,7 +1004,7 @@
 
     var figure = document.createElement('figure');
     figure.className = 'p';
-    var angle = state.isMobile ? act.tilt * 0.45 : act.tilt;
+    var angle = state.isMobile ? act.tilt * 0.4 : act.tilt;
     figure.style.transform = 'rotate(' + angle + 'deg)';
 
     var ph = document.createElement('div');
@@ -965,28 +1021,6 @@
     img.decoding = 'async';
     img.draggable = false;
     ph.appendChild(img);
-
-    var topBar = document.createElement('div');
-    topBar.className = 'ph-top-bar';
-
-    if (totalPhotos > 1) {
-      var counter = document.createElement('span');
-      counter.className = 'ph-pill';
-      counter.textContent = (photoIdx + 1) + ' / ' + totalPhotos;
-      topBar.appendChild(counter);
-    }
-
-    var zoomBtn = document.createElement('button');
-    zoomBtn.type = 'button';
-    zoomBtn.className = 'ph-pill ph-zoom';
-    zoomBtn.setAttribute('aria-label', 'Ampliar imagen de ' + act.title);
-    zoomBtn.textContent = '🔍 Ampliar';
-    zoomBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      openLightbox(act.id);
-    });
-    topBar.appendChild(zoomBtn);
-    ph.appendChild(topBar);
 
     ph.addEventListener('click', function () {
       openLightbox(act.id);
@@ -1031,7 +1065,9 @@
 
     var fn = document.createElement('div');
     fn.className = 'fn';
-    fn.textContent = act.code;
+    fn.textContent = totalPhotos > 1
+      ? act.code + ' · ' + (photoIdx + 1) + '/' + totalPhotos
+      : act.code;
 
     var ft = document.createElement('div');
     ft.className = 'ft';
@@ -1040,6 +1076,9 @@
     titles.appendChild(fn);
     titles.appendChild(ft);
     meta.appendChild(titles);
+
+    var cardActions = document.createElement('div');
+    cardActions.className = 'card-actions';
 
     if (totalPhotos > 1) {
       var thumbs = document.createElement('div');
@@ -1057,8 +1096,26 @@
           thumbs.appendChild(dot);
         })(t);
       }
-      meta.appendChild(thumbs);
+      cardActions.appendChild(thumbs);
     }
+
+    var zoomBtn = document.createElement('button');
+    zoomBtn.type = 'button';
+    zoomBtn.className = 'zoom-btn';
+    zoomBtn.setAttribute('aria-label', 'Ampliar imagen de ' + act.title);
+    zoomBtn.title = 'Ampliar imagen';
+    zoomBtn.appendChild(createSearchIconSvg());
+    var zoomLabel = document.createElement('span');
+    zoomLabel.className = 'zoom-text';
+    zoomLabel.textContent = 'Ampliar';
+    zoomBtn.appendChild(zoomLabel);
+    zoomBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openLightbox(act.id);
+    });
+    cardActions.appendChild(zoomBtn);
+
+    meta.appendChild(cardActions);
 
     figure.appendChild(ph);
     figure.appendChild(meta);
@@ -1084,7 +1141,7 @@
 
     var title = document.createElement('div');
     title.className = 'ct';
-    title.style.fontSize = 'clamp(40px,4vw,54px)';
+    title.style.fontSize = 'clamp(38px,3.8vw,50px)';
     title.textContent = 'Fin del registro';
 
     var sub = document.createElement('div');
@@ -1119,7 +1176,7 @@
     var homeBtn = document.createElement('button');
     homeBtn.type = 'button';
     homeBtn.className = 'btn';
-    homeBtn.style.marginTop = '8px';
+    homeBtn.style.marginTop = '6px';
     homeBtn.textContent = '← Volver a la portada';
     homeBtn.addEventListener('click', function () {
       goToCover(false);
@@ -1146,10 +1203,7 @@
     if (state.isMobile) {
       var sideClass = state.page % 2 === 0 ? 'pgL' : 'pgR';
       spreadEl.appendChild(buildPageElement(state.page, sideClass));
-      var currentAct = getActivityForPage(state.page);
-      pageLabel.textContent = currentAct
-        ? currentAct.code + ' · ' + (state.page + 1) + ' / ' + TOTAL_PAGES
-        : 'Página ' + (state.page + 1) + ' / ' + TOTAL_PAGES;
+      pageLabel.textContent = (state.page + 1) + ' / ' + TOTAL_PAGES;
       prevBtn.disabled = state.page === 0;
       nextBtn.disabled = state.page === TOTAL_PAGES - 1;
     } else {
@@ -1221,7 +1275,7 @@
       goToCover(false);
     });
     coverRow.innerHTML =
-      '<span class="index-row-main"><span class="index-code">PORTADA</span><span class="index-name">Bitácora de campo</span></span>' +
+      '<span class="index-row-main"><span class="index-code">PORTADA</span><span class="index-name">Bitácora de evidencias</span></span>' +
       '<span class="index-count">Inicio</span>';
     indexList.appendChild(coverRow);
 
