@@ -164,15 +164,20 @@
     min-height:0;
     display:flex;
     flex-direction:column;
+    align-items:center;
     justify-content:center;
   }
   .p{
     position:relative;
     flex:1;
+    width:100%;
+    max-width:100%;
+    max-height:100%;
     min-width:0;
     min-height:0;
     display:flex;
     flex-direction:column;
+    align-items:center;
     margin:0;
     background:#fffdf6;
     padding:10px 10px 9px;
@@ -199,14 +204,16 @@
   .ph{
     position:relative;
     flex:1;
+    width:100%;
     min-width:0;
     min-height:0;
-    background:transparent;
+    max-width:100%;
+    background:repeating-linear-gradient(45deg,#e4ebe1 0 6px,#dbe4d8 6px 12px);
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    padding:0;
+    padding:5px;
     cursor:zoom-in;
     user-select:none;
     touch-action:pan-y;
@@ -219,7 +226,21 @@
     object-fit:contain;
     display:block;
     background:#fff;
-    border:1px solid rgba(36,54,90,.12);
+    box-shadow:0 1px 4px rgba(36,54,90,.16);
+  }
+  .ph-status{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:#24365a;
+    background:rgba(255,253,246,.92);
+    padding:10px 14px;
+    border:1px dashed rgba(36,54,90,.4);
+    text-align:center;
+    line-height:1.45;
+  }
+  .ph-status a{
+    color:#7a2e2e;
+    font-weight:500;
   }
   .ph-nav{
     position:absolute;
@@ -247,6 +268,7 @@
   .ph-nav.next{right:6px}
 
   .card-meta{
+    width:100%;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -620,6 +642,7 @@
       top:6px;bottom:6px;
     }
     .p{padding:7px 7px 8px}
+    .ph{padding:4px}
     .p::before{top:-8px;width:88px;height:16px;margin-left:-44px}
     .label{width:94%;padding:28px 18px}
     .card-meta{gap:8px;margin-top:6px}
@@ -663,7 +686,10 @@
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Vista ampliada de imagen">
   <div class="lb-top">
     <div id="lbCaption" class="lb-caption"></div>
-    <button id="closeLbBtn" class="btn" type="button" style="min-height:32px;padding:0 12px;font-size:12px">Cerrar ✕</button>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <a id="lbPdfLink" class="btn" target="_blank" rel="noopener" style="display:none;min-height:32px;padding:0 12px;font-size:12px;align-items:center;text-decoration:none">Abrir PDF</a>
+      <button id="closeLbBtn" class="btn" type="button" style="min-height:32px;padding:0 12px;font-size:12px">Cerrar ✕</button>
+    </div>
   </div>
   <div id="lbStage" class="lb-stage">
     <button id="lbPrevBtn" class="lb-nav prev" type="button" aria-label="Foto anterior">‹</button>
@@ -746,10 +772,8 @@
       code: 'ACTIVIDAD 08',
       title: 'Simulador',
       tilt: -0.6,
-      photos: [
-        '/Actividades/actividad 8/actividad 8_1.jpg',
-        '/Actividades/actividad 8/actividad 8_2.jpg'
-      ]
+      pdf: '/Actividades/actividad 8/Ciencias_actividad_8#_Genesis_Corea_Y_Francis_Cid (2).pdf',
+      pdfPages: 5
     },
     {
       id: 10,
@@ -792,13 +816,177 @@
   var lightbox = document.getElementById('lightbox');
   var lbImg = document.getElementById('lbImg');
   var lbCaption = document.getElementById('lbCaption');
+  var lbPdfLink = document.getElementById('lbPdfLink');
   var lbPrevBtn = document.getElementById('lbPrevBtn');
   var lbNextBtn = document.getElementById('lbNextBtn');
   var closeLbBtn = document.getElementById('closeLbBtn');
   var lbStage = document.getElementById('lbStage');
 
+  var activeFrames = [];
+  var pdfJsPromise = null;
+  var pdfDocCache = {};
+  var pdfPageCache = {};
+
   function assetUrl(path) {
-    return encodeURI(ASSET_BASE + path);
+    var encoded = path.split('/').map(function (seg, idx) {
+      return idx === 0 && seg === '' ? '' : encodeURIComponent(seg);
+    }).join('/');
+    return ASSET_BASE + encoded;
+  }
+
+  function getSlideCount(act) {
+    if (!act) return 0;
+    return act.pdf ? (act.pdfPages || 1) : act.photos.length;
+  }
+
+  function getCountLabel(act) {
+    var count = getSlideCount(act);
+    if (act.pdf) return count + (count === 1 ? ' pág. (PDF)' : ' págs. (PDF)');
+    return count + (count === 1 ? ' foto' : ' fotos');
+  }
+
+  function loadPdfJs() {
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      return Promise.resolve(window.pdfjsLib);
+    }
+    if (pdfJsPromise) return pdfJsPromise;
+    pdfJsPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.async = true;
+      script.onload = function () {
+        if (!window.pdfjsLib) {
+          reject(new Error('pdfjsLib unavailable'));
+          return;
+        }
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        resolve(window.pdfjsLib);
+      };
+      script.onerror = function () {
+        reject(new Error('No se pudo cargar el visor PDF'));
+      };
+      document.head.appendChild(script);
+    });
+    return pdfJsPromise;
+  }
+
+  function getPdfDocument(pdfPath) {
+    if (pdfDocCache[pdfPath]) return pdfDocCache[pdfPath];
+    pdfDocCache[pdfPath] = loadPdfJs().then(function (lib) {
+      return lib.getDocument(assetUrl(pdfPath)).promise;
+    });
+    return pdfDocCache[pdfPath];
+  }
+
+  function renderPdfPageUrl(act, pageIndexZeroBased) {
+    var pageNum = pageIndexZeroBased + 1;
+    var cacheKey = act.pdf + '#' + pageNum;
+    if (pdfPageCache[cacheKey]) return Promise.resolve(pdfPageCache[cacheKey]);
+
+    return getPdfDocument(act.pdf).then(function (pdfDoc) {
+      if (pdfDoc.numPages && act.pdfPages !== pdfDoc.numPages) {
+        act.pdfPages = pdfDoc.numPages;
+      }
+      return pdfDoc.getPage(pageNum);
+    }).then(function (page) {
+      var scale = Math.min(2.6, Math.max(2.0, window.devicePixelRatio || 2));
+      var viewport = page.getViewport({ scale: scale });
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+        var url = canvas.toDataURL('image/png');
+        pdfPageCache[cacheKey] = url;
+        return url;
+      });
+    });
+  }
+
+  function fitFrame(frame) {
+    var wrap = frame.wrap;
+    var figure = frame.figure;
+    var ph = frame.ph;
+    var meta = frame.meta;
+    var img = frame.img;
+
+    if (!wrap.isConnected || !img.naturalWidth || !img.naturalHeight) return;
+
+    // Reiniciar estilos inline para medir contenedor disponible sin restricciones previas
+    figure.style.width = '100%';
+    figure.style.flex = '1';
+    ph.style.width = '100%';
+    ph.style.height = '';
+    ph.style.flex = '1';
+
+    var wrapW = wrap.clientWidth;
+    var wrapH = wrap.clientHeight;
+    if (!wrapW || !wrapH) return;
+
+    var pStyle = window.getComputedStyle(figure);
+    var phStyle = window.getComputedStyle(ph);
+    var metaStyle = window.getComputedStyle(meta);
+
+    var pPadX = parseFloat(pStyle.paddingLeft) + parseFloat(pStyle.paddingRight);
+    var pPadY = parseFloat(pStyle.paddingTop) + parseFloat(pStyle.paddingBottom);
+    var phPadX = parseFloat(phStyle.paddingLeft) + parseFloat(phStyle.paddingRight);
+    var phPadY = parseFloat(phStyle.paddingTop) + parseFloat(phStyle.paddingBottom);
+    var metaMarginTop = parseFloat(metaStyle.marginTop) || 0;
+
+    var ar = img.naturalWidth / img.naturalHeight;
+    var minCardW = Math.min(wrapW, state.isMobile ? 260 : 300);
+
+    var estMetaH = (meta.offsetHeight || 48) + metaMarginTop;
+    var maxPhW = Math.max(100, wrapW - pPadX);
+    var maxPhH = Math.max(100, wrapH - pPadY - estMetaH);
+    var availW = Math.max(80, maxPhW - phPadX);
+    var availH = Math.max(80, maxPhH - phPadY);
+
+    var fitW, fitH;
+    if (availW / availH > ar) {
+      fitH = availH;
+      fitW = availH * ar;
+    } else {
+      fitW = availW;
+      fitH = availW / ar;
+    }
+
+    var phW = Math.round(fitW + phPadX);
+    var cardW = Math.min(wrapW, Math.max(phW + pPadX, minCardW));
+    figure.style.flex = '0 1 auto';
+    figure.style.width = cardW + 'px';
+
+    var actualMetaH = meta.offsetHeight + metaMarginTop;
+    if (Math.abs(actualMetaH - estMetaH) > 2) {
+      maxPhH = Math.max(100, wrapH - pPadY - actualMetaH);
+      availH = Math.max(80, maxPhH - phPadY);
+      if (availW / availH > ar) {
+        fitH = availH;
+        fitW = availH * ar;
+      } else {
+        fitW = availW;
+        fitH = availW / ar;
+      }
+      phW = Math.round(fitW + phPadX);
+      cardW = Math.min(wrapW, Math.max(phW + pPadX, minCardW));
+      figure.style.width = cardW + 'px';
+    }
+
+    var phH = Math.round(fitH + phPadY);
+    ph.style.flex = 'none';
+    ph.style.width = phW + 'px';
+    ph.style.height = phH + 'px';
+  }
+
+  function fitAllFrames() {
+    for (var i = 0; i < activeFrames.length; i++) {
+      fitFrame(activeFrames[i]);
+    }
   }
 
   function createSearchIconSvg() {
@@ -887,17 +1075,22 @@
   }
 
   function preloadNextPhoto(act) {
-    if (!act || act.photos.length <= 1) return;
+    var total = getSlideCount(act);
+    if (!act || total <= 1) return;
     var current = state.photoIndex[act.id] || 0;
-    var nextIdx = (current + 1) % act.photos.length;
+    var nextIdx = (current + 1) % total;
+    if (act.pdf) {
+      renderPdfPageUrl(act, nextIdx).catch(function () {});
+      return;
+    }
     var img = new Image();
     img.src = assetUrl(act.photos[nextIdx]);
   }
 
   function stepPhoto(activityId, delta) {
     var act = getActivityById(activityId);
-    if (!act || act.photos.length <= 1) return;
-    var total = act.photos.length;
+    var total = getSlideCount(act);
+    if (!act || total <= 1) return;
     var cur = state.photoIndex[activityId] || 0;
     state.photoIndex[activityId] = (cur + delta + total) % total;
     render();
@@ -909,7 +1102,8 @@
   function setPhoto(activityId, photoIdx) {
     var act = getActivityById(activityId);
     if (!act) return;
-    if (photoIdx < 0 || photoIdx >= act.photos.length) return;
+    var total = getSlideCount(act);
+    if (photoIdx < 0 || photoIdx >= total) return;
     state.photoIndex[activityId] = photoIdx;
     render();
     if (state.lightboxActivityId === activityId) {
@@ -1012,15 +1206,59 @@
     ph.title = 'Clic para ampliar imagen';
 
     var photoIdx = state.photoIndex[act.id] || 0;
-    var totalPhotos = act.photos.length;
+    var totalPhotos = getSlideCount(act);
 
     var img = document.createElement('img');
     img.className = 'photo-img';
-    img.src = assetUrl(act.photos[photoIdx]);
-    img.alt = act.code + ' — ' + act.title + ' (foto ' + (photoIdx + 1) + ' de ' + totalPhotos + ')';
+    img.alt = act.code + ' — ' + act.title + ' (' + (act.pdf ? 'página ' : 'foto ') + (photoIdx + 1) + ' de ' + totalPhotos + ')';
     img.decoding = 'async';
     img.draggable = false;
-    ph.appendChild(img);
+
+    var meta = document.createElement('div');
+    meta.className = 'card-meta';
+
+    var frameRecord = { wrap: wrap, figure: figure, ph: ph, meta: meta, img: img };
+    activeFrames.push(frameRecord);
+
+    img.addEventListener('load', function () {
+      fitFrame(frameRecord);
+    });
+
+    if (act.pdf) {
+      var cacheKey = act.pdf + '#' + (photoIdx + 1);
+      if (pdfPageCache[cacheKey]) {
+        img.src = pdfPageCache[cacheKey];
+        ph.appendChild(img);
+      } else {
+        var statusBox = document.createElement('div');
+        statusBox.className = 'ph-status';
+        statusBox.textContent = 'Cargando página ' + (photoIdx + 1) + ' de ' + totalPhotos + '…';
+        ph.appendChild(statusBox);
+
+        renderPdfPageUrl(act, photoIdx).then(function (dataUrl) {
+          if (!ph.isConnected || (state.photoIndex[act.id] || 0) !== photoIdx) return;
+          if (statusBox.parentNode) statusBox.remove();
+          img.src = dataUrl;
+          ph.appendChild(img);
+          fitFrame(frameRecord);
+        }).catch(function () {
+          if (!ph.isConnected) return;
+          statusBox.innerHTML = '';
+          var errText = document.createTextNode('No se pudo previsualizar la página aquí. ');
+          var link = document.createElement('a');
+          link.href = assetUrl(act.pdf);
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = 'Abrir PDF';
+          link.addEventListener('click', function (e) { e.stopPropagation(); });
+          statusBox.appendChild(errText);
+          statusBox.appendChild(link);
+        });
+      }
+    } else {
+      img.src = assetUrl(act.photos[photoIdx]);
+      ph.appendChild(img);
+    }
 
     ph.addEventListener('click', function () {
       openLightbox(act.id);
@@ -1056,9 +1294,6 @@
         stepPhoto(act.id, -1);
       });
     }
-
-    var meta = document.createElement('div');
-    meta.className = 'card-meta';
 
     var titles = document.createElement('div');
     titles.className = 'card-titles';
@@ -1162,7 +1397,7 @@
 
       var itemNum = document.createElement('span');
       itemNum.className = 'end-item-num';
-      itemNum.textContent = act.code + ' · ' + act.photos.length + (act.photos.length === 1 ? ' foto' : ' fotos');
+      itemNum.textContent = act.code + ' · ' + getCountLabel(act);
 
       var itemTitle = document.createElement('span');
       itemTitle.className = 'end-item-title';
@@ -1199,6 +1434,7 @@
 
   function render() {
     spreadEl.innerHTML = '';
+    activeFrames = [];
 
     if (state.isMobile) {
       var sideClass = state.page % 2 === 0 ? 'pgL' : 'pgR';
@@ -1218,6 +1454,8 @@
       prevBtn.disabled = s === 0;
       nextBtn.disabled = s === MAX_SPREAD;
     }
+
+    window.requestAnimationFrame(fitAllFrames);
   }
 
   function goToCover(replaceOnly) {
@@ -1307,7 +1545,7 @@
 
       var count = document.createElement('span');
       count.className = 'index-count';
-      count.textContent = act.photos.length + (act.photos.length === 1 ? ' foto' : ' fotos');
+      count.textContent = getCountLabel(act);
 
       main.appendChild(code);
       main.appendChild(name);
@@ -1330,14 +1568,34 @@
     var act = getActivityById(state.lightboxActivityId);
     if (!act) return;
     var idx = state.photoIndex[act.id] || 0;
-    var total = act.photos.length;
-    lbImg.src = assetUrl(act.photos[idx]);
+    var total = getSlideCount(act);
+    var noun = act.pdf ? 'Página' : 'Foto';
     lbImg.alt = act.code + ' — ' + act.title;
     lbCaption.textContent = total > 1
-      ? act.code + ' · ' + act.title + ' (Foto ' + (idx + 1) + ' de ' + total + ')'
+      ? act.code + ' · ' + act.title + ' (' + noun + ' ' + (idx + 1) + ' de ' + total + ')'
       : act.code + ' · ' + act.title;
     lbPrevBtn.style.display = total > 1 ? 'flex' : 'none';
     lbNextBtn.style.display = total > 1 ? 'flex' : 'none';
+
+    if (act.pdf) {
+      lbPdfLink.href = assetUrl(act.pdf);
+      lbPdfLink.style.display = 'inline-flex';
+      var cacheKey = act.pdf + '#' + (idx + 1);
+      if (pdfPageCache[cacheKey]) {
+        lbImg.src = pdfPageCache[cacheKey];
+      } else {
+        lbImg.removeAttribute('src');
+        renderPdfPageUrl(act, idx).then(function (dataUrl) {
+          if (state.lightboxActivityId === act.id && (state.photoIndex[act.id] || 0) === idx) {
+            lbImg.src = dataUrl;
+          }
+        }).catch(function () {});
+      }
+    } else {
+      lbPdfLink.style.display = 'none';
+      lbPdfLink.removeAttribute('href');
+      lbImg.src = assetUrl(act.photos[idx]);
+    }
   }
 
   function openLightbox(activityId) {
@@ -1406,6 +1664,8 @@
         if (focusedPage !== null) state.page = focusedPage;
       }
       render();
+    } else {
+      fitAllFrames();
     }
   });
 
