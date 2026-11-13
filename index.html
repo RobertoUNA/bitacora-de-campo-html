@@ -4,127 +4,1372 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bitácora de campo</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2324365a'/%3E%3Crect x='14' y='12' width='36' height='40' rx='3' fill='%23f7f3e6'/%3E%3Cpath d='M22 24h20M22 32h20M22 40h14' stroke='%2324365a' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
 <style>
-html,body,#dc-root,#dc-root>.sc-host{height:100%;min-height:100vh;margin:0;background-color:#27312f}
-.stage{box-sizing:border-box;min-height:100vh;height:100vh;padding:12px 16px 10px;display:flex;flex-direction:column;justify-content:space-between;background-color:#2f3b39;background-image:radial-gradient(circle at 50% 30%,#3d4c49,#27312f 70%)}
-.book{position:relative;flex:1;display:flex;flex-direction:column;width:100%;min-height:0;margin:0 auto;padding:12px;box-sizing:border-box;background:#1b2a47;border-radius:6px;box-shadow:0 20px 44px rgba(0,0,0,.5)}
-.sp{display:flex;flex-wrap:wrap;width:100%;flex:1;min-height:0}
-.pg{position:relative;flex:1 1 380px;min-height:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background-color:#f7f3e6;background-image:linear-gradient(rgba(70,130,180,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(70,130,180,.22) 1px,transparent 1px);background-size:28px 28px}
-.pgL{padding:24px 36px 36px 64px;box-shadow:inset -34px 0 30px -26px rgba(40,30,10,.4)}
-.pgR{padding:24px 64px 36px 36px;box-shadow:inset 34px 0 30px -26px rgba(40,30,10,.4)}
-.pgL::after{content:"";position:absolute;top:0;bottom:0;left:48px;width:2px;background:#c0504d}
-.pgR::after{content:"";position:absolute;top:0;bottom:0;right:48px;width:2px;background:#c0504d}
-.cover{background-color:#24365a;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 6px);box-shadow:inset -34px 0 30px -26px rgba(0,0,0,.5)}
-.cover::after{display:none}
-.label{background:#f7f3e6;border:3px double #24365a;padding:52px 44px;width:82%;max-width:560px;box-sizing:border-box;text-align:center;transform:rotate(-1.5deg);box-shadow:0 6px 14px rgba(0,0,0,.35)}
-.ct{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(56px,5vw,78px);line-height:.95;color:#24365a;margin:10px 0 6px}
-.cs{font-family:'Caveat',cursive;font-size:clamp(26px,2.2vw,36px);color:#3d3d3d;margin-bottom:12px}
-.wrap{position:relative;width:92%;height:88%;max-width:none;display:flex;flex-direction:column;justify-content:center}
-.p{position:relative;flex:1;display:flex;flex-direction:column;margin:0;background:#fffdf6;padding:18px 20px 22px;box-sizing:border-box;box-shadow:0 2px 0 #cfc7b0,0 8px 14px rgba(60,50,30,.22)}
-.p::before{content:"";position:absolute;top:-12px;left:50%;width:120px;height:26px;margin-left:-60px;background:rgba(236,214,140,.75);transform:rotate(-2deg)}
-.ph{flex:1;min-height:220px;background:repeating-linear-gradient(45deg,#e4ebe1 0 6px,#dbe4d8 6px 12px);display:flex;align-items:center;justify-content:center;color:#24365a}
-.ph svg{width:62%;height:62%}
-.fn{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.05vw,15px);color:#7a2e2e;margin-top:12px;letter-spacing:.06em}
-.ft{font-family:'Caveat',cursive;font-size:clamp(32px,2.6vw,44px);line-height:1.05;color:#24365a;margin-top:2px}
-.fd{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.05vw,15px);color:#3d3d3d;margin-top:4px;line-height:1.4}
-.p .fn,.p .ft,.p .fd{max-width:52%}
-.note{position:absolute;right:-16px;bottom:-16px;width:46%;min-width:210px;height:38%;min-height:140px;box-sizing:border-box;padding:16px 20px;background:#fbe98a;color:#3d3a1a;font-family:'Caveat',cursive;font-size:clamp(24px,2vw,32px);line-height:1.15;transform:rotate(2.5deg);box-shadow:0 6px 12px rgba(60,50,30,.3)}
-.num{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3d3d3d}
-.spiral{position:absolute;top:12px;bottom:12px;left:50%;width:36px;margin-left:-18px;pointer-events:none;background-image:radial-gradient(circle at 50% 50%,#1f1f1f 0 6px,rgba(0,0,0,.25) 7px,transparent 9px);background-size:36px 44px;background-position:0 22px}
-.btn{font-family:'IBM Plex Mono',monospace;font-size:14px;min-height:40px;padding:0 22px;background:#f7f3e6;color:#24365a;border:2px solid #24365a;cursor:pointer}
-.btn:hover{background:#fbe98a}
-.btn:disabled{opacity:.45;cursor:default;background:#f7f3e6}
-@media (max-width:768px){
-.stage{padding:8px 8px 6px}
-.book{padding:8px}
-.sp{flex-wrap:nowrap}
-.sp>.pg:nth-child(2){display:none}
-.pg{flex:1 1 100%;width:100%}
-.pgL,.pgR{padding:20px 18px 34px 42px;box-shadow:inset 24px 0 24px -20px rgba(40,30,10,.35)}
-.pgL::after,.pgR::after{left:30px;right:auto}
-.spiral{left:6px;margin-left:0;width:24px;background-size:24px 36px;background-position:0 18px;top:8px;bottom:8px}
-.wrap{width:95%;height:90%}
-.note{width:50%;min-width:140px;height:34%;min-height:110px;right:-8px;bottom:-10px;padding:12px 14px;font-size:clamp(20px,4.5vw,26px)}
-.label{width:90%;padding:32px 24px}
-.btn{padding:0 14px;font-size:13px}
-}
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%;margin:0;background-color:#27312f;color:#24365a}
+  .stage{
+    min-height:100vh;
+    height:100vh;
+    height:100dvh;
+    padding:12px 16px 10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    background-color:#2f3b39;
+    background-image:radial-gradient(circle at 50% 30%,#3d4c49,#27312f 70%);
+    overflow:hidden;
+  }
+  .book{
+    position:relative;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    min-height:0;
+    margin:0 auto;
+    padding:12px;
+    background:#1b2a47;
+    border-radius:6px;
+    box-shadow:0 20px 44px rgba(0,0,0,.5);
+  }
+  .sp{
+    display:flex;
+    flex-wrap:nowrap;
+    width:100%;
+    flex:1;
+    min-height:0;
+  }
+  .pg{
+    position:relative;
+    flex:1 1 50%;
+    min-width:0;
+    min-height:0;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background-color:#f7f3e6;
+    background-image:
+      linear-gradient(rgba(70,130,180,.22) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(70,130,180,.22) 1px,transparent 1px);
+    background-size:28px 28px;
+  }
+  .pgL{
+    padding:22px 34px 36px 64px;
+    box-shadow:inset -34px 0 30px -26px rgba(40,30,10,.4);
+  }
+  .pgR{
+    padding:22px 64px 36px 34px;
+    box-shadow:inset 34px 0 30px -26px rgba(40,30,10,.4);
+  }
+  .pgL::after{
+    content:"";
+    position:absolute;
+    top:0;bottom:0;left:48px;
+    width:2px;
+    background:#c0504d;
+    pointer-events:none;
+  }
+  .pgR::after{
+    content:"";
+    position:absolute;
+    top:0;bottom:0;right:48px;
+    width:2px;
+    background:#c0504d;
+    pointer-events:none;
+  }
+  .cover{
+    background-color:#24365a;
+    background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 6px);
+    box-shadow:inset -34px 0 30px -26px rgba(0,0,0,.5);
+  }
+  .cover::after{display:none}
+  .label{
+    background:#f7f3e6;
+    border:3px double #24365a;
+    padding:44px 38px;
+    width:84%;
+    max-width:540px;
+    text-align:center;
+    transform:rotate(-1.5deg);
+    box-shadow:0 6px 14px rgba(0,0,0,.35);
+  }
+  .ct{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:clamp(50px,4.8vw,74px);
+    line-height:.95;
+    color:#24365a;
+    margin:10px 0 6px;
+  }
+  .cs{
+    font-family:'Caveat',cursive;
+    font-size:clamp(24px,2.1vw,34px);
+    color:#3d3d3d;
+    margin-bottom:12px;
+  }
+  .cover-actions{
+    margin-top:16px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .cover-link{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    padding:7px 14px;
+    background:transparent;
+    color:#24365a;
+    border:1.5px solid #24365a;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .cover-link:hover{background:#fbe98a}
+
+  .wrap{
+    position:relative;
+    width:94%;
+    height:90%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .p{
+    position:relative;
+    flex:1;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    margin:0;
+    background:#fffdf6;
+    padding:16px 18px 18px;
+    box-shadow:0 2px 0 #cfc7b0,0 8px 14px rgba(60,50,30,.22);
+    transition:box-shadow .2s ease;
+  }
+  .wrap.is-focused .p{
+    box-shadow:0 0 0 2px rgba(122,46,46,.55),0 2px 0 #cfc7b0,0 12px 22px rgba(60,50,30,.28);
+  }
+  .p::before{
+    content:"";
+    position:absolute;
+    top:-12px;
+    left:50%;
+    width:120px;
+    height:24px;
+    margin-left:-60px;
+    background:rgba(236,214,140,.75);
+    transform:rotate(-2deg);
+    pointer-events:none;
+  }
+
+  .ph{
+    position:relative;
+    flex:1;
+    min-width:0;
+    min-height:0;
+    background:repeating-linear-gradient(45deg,#e4ebe1 0 6px,#dbe4d8 6px 12px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:8px;
+    cursor:zoom-in;
+    user-select:none;
+    touch-action:pan-y;
+  }
+  .photo-img{
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    display:block;
+    border-radius:2px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    background:#fff;
+  }
+  .ph-top-bar{
+    position:absolute;
+    top:8px;
+    right:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    z-index:2;
+  }
+  .ph-pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    line-height:1;
+    padding:6px 9px;
+    background:rgba(255,253,246,.92);
+    color:#24365a;
+    border:1.5px solid rgba(36,54,90,.45);
+    border-radius:3px;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+  }
+  .ph-zoom{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .ph-zoom:hover{background:#fbe98a}
+  .ph-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,253,246,.9);
+    color:#24365a;
+    border:1.5px solid #24365a;
+    border-radius:50%;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+    z-index:2;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+    transition:background .15s,transform .15s;
+  }
+  .ph-nav:hover{background:#fbe98a}
+  .ph-nav.prev{left:8px}
+  .ph-nav.next{right:8px}
+
+  .card-meta{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:10px;
+    flex-shrink:0;
+  }
+  .card-titles{
+    min-width:0;
+    flex:1;
+  }
+  .fn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(11px,1vw,14px);
+    color:#7a2e2e;
+    letter-spacing:.06em;
+  }
+  .ft{
+    font-family:'Caveat',cursive;
+    font-size:clamp(30px,2.5vw,42px);
+    line-height:1.02;
+    color:#24365a;
+    margin-top:2px;
+    word-break:break-word;
+  }
+  .fd{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(12px,1vw,14px);
+    color:#3d3d3d;
+    margin-top:4px;
+    line-height:1.4;
+  }
+
+  .thumbs{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    flex-shrink:0;
+  }
+  .thumb-dot{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    min-width:24px;
+    height:24px;
+    padding:0 6px;
+    border:1.5px solid rgba(36,54,90,.45);
+    background:#f7f3e6;
+    color:#24365a;
+    cursor:pointer;
+    border-radius:3px;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .thumb-dot:hover{background:#fbe98a}
+  .thumb-dot.active{
+    background:#24365a;
+    color:#f7f3e6;
+    border-color:#24365a;
+  }
+
+  .num{
+    position:absolute;
+    bottom:12px;
+    left:0;right:0;
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:#3d3d3d;
+    pointer-events:none;
+  }
+  .spiral{
+    position:absolute;
+    top:12px;bottom:12px;
+    left:50%;
+    width:36px;
+    margin-left:-18px;
+    pointer-events:none;
+    background-image:radial-gradient(circle at 50% 50%,#1f1f1f 0 6px,rgba(0,0,0,.25) 7px,transparent 9px);
+    background-size:36px 44px;
+    background-position:0 22px;
+    z-index:3;
+  }
+
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:10px;
+    flex-shrink:0;
+  }
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    min-height:38px;
+    padding:0 18px;
+    background:#f7f3e6;
+    color:#24365a;
+    border:2px solid #24365a;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .btn:hover:not(:disabled){background:#fbe98a}
+  .btn:disabled{opacity:.45;cursor:default;background:#f7f3e6}
+  .btn-index{
+    background:#fffdf6;
+    border-style:dashed;
+  }
+  .page-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:#f7f3e6;
+    text-align:center;
+    min-width:130px;
+  }
+
+  /* End page chapter directory */
+  .end-wrap{
+    width:90%;
+    max-width:520px;
+    max-height:90%;
+    overflow-y:auto;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .end-list{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:6px;
+    text-align:left;
+  }
+  .end-item{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    padding:9px 11px;
+    background:#fffdf6;
+    border:1.5px solid rgba(36,54,90,.35);
+    color:#24365a;
+    text-decoration:none;
+    cursor:pointer;
+    font-family:inherit;
+    box-shadow:0 2px 5px rgba(60,50,30,.12);
+    transition:background .15s,transform .15s;
+  }
+  .end-item:hover{
+    background:#fbe98a;
+    transform:translateY(-1px);
+  }
+  .end-item-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:#7a2e2e;
+  }
+  .end-item-title{
+    font-family:'Caveat',cursive;
+    font-size:23px;
+    line-height:1.05;
+    color:#24365a;
+  }
+
+  /* Chapter index modal */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(15,22,26,.72);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    z-index:50;
+  }
+  .modal-backdrop.open{display:flex}
+  .index-card{
+    width:100%;
+    max-width:520px;
+    max-height:86vh;
+    overflow-y:auto;
+    background-color:#f7f3e6;
+    background-image:linear-gradient(rgba(70,130,180,.2) 1px,transparent 1px);
+    background-size:100% 28px;
+    border:3px solid #24365a;
+    border-radius:4px;
+    padding:20px 22px;
+    box-shadow:0 20px 44px rgba(0,0,0,.55);
+  }
+  .index-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    border-bottom:2px solid #c0504d;
+    padding-bottom:10px;
+    margin-bottom:12px;
+  }
+  .index-title{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:34px;
+    line-height:1;
+    color:#24365a;
+    margin:0;
+  }
+  .index-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .index-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    padding:10px 12px;
+    background:rgba(255,253,246,.9);
+    border:1.5px solid rgba(36,54,90,.3);
+    color:#24365a;
+    text-align:left;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background .15s;
+  }
+  .index-row:hover{background:#fbe98a}
+  .index-row.active{
+    background:#24365a;
+    color:#f7f3e6;
+    border-color:#24365a;
+  }
+  .index-row.active .index-code,
+  .index-row.active .index-count{
+    color:#fbe98a;
+  }
+  .index-row-main{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    min-width:0;
+  }
+  .index-code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:#7a2e2e;
+    flex-shrink:0;
+  }
+  .index-name{
+    font-family:'Caveat',cursive;
+    font-size:26px;
+    line-height:1.05;
+  }
+  .index-count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:#555;
+    flex-shrink:0;
+  }
+
+  /* Lightbox modal */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(12,18,20,.92);
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    z-index:60;
+  }
+  .lightbox.open{display:flex}
+  .lb-top{
+    width:100%;
+    max-width:1040px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+    color:#f7f3e6;
+  }
+  .lb-caption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:#f7f3e6;
+  }
+  .lb-stage{
+    position:relative;
+    flex:1;
+    min-height:0;
+    width:100%;
+    max-width:1040px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    touch-action:pan-y;
+  }
+  .lb-img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:3px;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
+    background:#fff;
+  }
+  .lb-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:2px solid #24365a;
+    background:#f7f3e6;
+    color:#24365a;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+  }
+  .lb-nav:hover{background:#fbe98a}
+  .lb-nav.prev{left:8px}
+  .lb-nav.next{right:8px}
+
+  @media (max-width:768px){
+    .stage{padding:8px 8px 6px}
+    .book{padding:8px}
+    .pg{flex:1 1 100%;width:100%}
+    .pgL,.pgR{
+      padding:18px 16px 32px 38px;
+      box-shadow:inset 24px 0 24px -20px rgba(40,30,10,.35);
+    }
+    .pgL::after,.pgR::after{left:28px;right:auto}
+    .spiral{
+      left:6px;margin-left:0;width:24px;
+      background-size:24px 36px;background-position:0 18px;
+      top:8px;bottom:8px;
+    }
+    .wrap{width:96%;height:92%}
+    .p{padding:12px 12px 14px}
+    .label{width:92%;padding:30px 20px}
+    .card-meta{flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px}
+    .thumbs{justify-content:flex-start}
+    .controls{gap:8px;margin-top:8px}
+    .btn{padding:0 12px;font-size:13px;min-height:36px}
+    .page-label{min-width:auto;font-size:12px}
+    .end-list{grid-template-columns:1fr}
+    .ph-nav{width:30px;height:30px;font-size:16px}
+  }
 </style>
-</helmet>
+</head>
+<body>
 <div class="stage">
-<div class="book">
-<sc-if value="{{s0}}" hint-placeholder-val="{{ true }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL cover"><div class="label"><div class="fn" style="color:#7a2e2e">CUADERNO DE CIENCIAS · VOL. 3</div><div class="ct">Bitácora de campo</div><div class="cs">Observaciones y especímenes</div><div class="fd">8 registros · pasa la página →</div></div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.4deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 90C20 70 18 35 50 10c32 25 30 60 0 80z"></path><path d="M50 90V25M50 70L33 55M50 58L68 44M50 46L36 34"></path></svg></div><div class="fn">FIG. 01</div><div class="ft">Hoja y nervadura</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">1</div></div></sc-if></div></sc-if>
-<sc-if value="{{s1}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.2deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="38"></circle><circle cx="42" cy="46" r="12"></circle><circle cx="42" cy="46" r="4"></circle><path d="M66 62q8 4 10-4M60 30q6-6 10 2"></path></svg></div><div class="fn">FIG. 02</div><div class="ft">Célula al microscopio</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">2</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-0.8deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 8L78 34 66 90H34L22 34z"></path><path d="M22 34H78M50 8L40 34 34 90M50 8L60 34 66 90"></path></svg></div><div class="fn">FIG. 03</div><div class="ft">Cristal de cuarzo</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">3</div></div></sc-if></div></sc-if>
-<sc-if value="{{s2}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.6deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 52c-4-4-10-2-10 4s10 10 16 6 6-16-2-22-24-4-26 10 6 28 24 30 36-8 30-26"></path></svg></div><div class="fn">FIG. 04</div><div class="ft">Concha en espiral</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">4</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.2deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M42 10h16M44 10v26L18 82q-4 10 6 10h52q10 0 6-10L56 36V10"></path><path d="M30 64h40"></path></svg></div><div class="fn">FIG. 05</div><div class="ft">Matraz de ensayo</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">5</div></div></sc-if></div></sc-if>
-<sc-if value="{{s3}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(0.9deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="22"></circle><ellipse cx="50" cy="50" rx="44" ry="12" transform="rotate(-20 50 50)"></ellipse></svg></div><div class="fn">FIG. 06</div><div class="ft">Planeta anillado</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">6</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap"><figure class="p" style="transform: rotate(-1.5deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 50L24 28M50 50L78 30M50 50L50 84M78 30L90 52"></path><circle cx="50" cy="50" r="10"></circle><circle cx="24" cy="28" r="7"></circle><circle cx="78" cy="30" r="7"></circle><circle cx="50" cy="84" r="7"></circle><circle cx="90" cy="52" r="5"></circle></svg></div><div class="fn">FIG. 07</div><div class="ft">Modelo molecular</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">7</div></div></sc-if></div></sc-if>
-<sc-if value="{{s4}}" hint-placeholder-val="{{ false }}"><div class="sp"><sc-if value="{{showL}}" hint-placeholder-val="{{ true }}"><div class="pg pgL"><div class="wrap"><figure class="p" style="transform: rotate(1.1deg)"><div class="ph"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 92V40M50 60C30 60 24 46 26 34c16 0 24 8 24 26zM50 46C66 46 74 36 72 22 58 22 50 30 50 46zM20 92h60"></path></svg></div><div class="fn">FIG. 08</div><div class="ft">Germinación</div><div class="fd">[TU DESCRIPCIÓN · lugar y fecha]</div></figure><div class="note">[tu nota]</div></div><div class="num">8</div></div></sc-if><sc-if value="{{showR}}" hint-placeholder-val="{{ true }}"><div class="pg pgR"><div class="wrap" style="text-align:center"><div class="ct" style="color:#24365a;font-size:56px">Fin del registro</div><div class="cs" style="color:#3d3d3d">[espacio para nuevas observaciones]</div></div></div></sc-if></div></sc-if>
-<div class="spiral"></div>
+  <div class="book">
+    <div id="spread" class="sp" aria-live="polite"></div>
+    <div class="spiral" aria-hidden="true"></div>
+  </div>
+  <div class="controls">
+    <button id="prevBtn" class="btn" type="button">← Anterior</button>
+    <button id="indexBtn" class="btn btn-index" type="button">Capítulos</button>
+    <div id="pageLabel" class="page-label">Páginas 1 / 5</div>
+    <button id="nextBtn" class="btn" type="button">Siguiente →</button>
+  </div>
 </div>
-<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin-top:10px;flex-shrink:0">
-<button class="btn" onClick="{{ prev }}" disabled="{{ prevOff }}">← Anterior</button>
-<div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#f7f3e6">{{ label }}</div>
-<button class="btn" onClick="{{ next }}" disabled="{{ nextOff }}">Siguiente →</button>
+
+<!-- Índice de capítulos -->
+<div id="indexModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="indexTitle">
+  <div class="index-card">
+    <div class="index-head">
+      <h2 id="indexTitle" class="index-title">Capítulos de la bitácora</h2>
+      <button id="closeIndexBtn" class="btn" type="button" style="min-height:32px;padding:0 12px;font-size:12px">Cerrar</button>
+    </div>
+    <div id="indexList" class="index-list"></div>
+  </div>
 </div>
+
+<!-- Visor ampliado (Lightbox) -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Vista ampliada de imagen">
+  <div class="lb-top">
+    <div id="lbCaption" class="lb-caption"></div>
+    <button id="closeLbBtn" class="btn" type="button" style="min-height:32px;padding:0 12px;font-size:12px">Cerrar ✕</button>
+  </div>
+  <div id="lbStage" class="lb-stage">
+    <button id="lbPrevBtn" class="lb-nav prev" type="button" aria-label="Foto anterior">‹</button>
+    <img id="lbImg" class="lb-img" alt="">
+    <button id="lbNextBtn" class="lb-nav next" type="button" aria-label="Foto siguiente">›</button>
+  </div>
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":920}}'>
-class Component extends DCLogic {
-constructor(props) {
-super(props);
-const mobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-this.state = { page: 0, isMobile: mobile };
-this.onResize = () => {
-const m = window.innerWidth <= 768;
-if (m !== this.state.isMobile) {
-this.setState({
-isMobile: m,
-page: m ? (this.state.page || 0) : Math.floor((this.state.page || 0) / 2) * 2
-});
-}
-};
-}
-componentDidMount() {
-if (typeof window !== 'undefined') {
-window.addEventListener('resize', this.onResize);
-this.onResize();
-}
-}
-componentWillUnmount() {
-if (typeof window !== 'undefined') {
-window.removeEventListener('resize', this.onResize);
-}
-}
-renderVals() {
-const p = this.state.page || 0;
-const m = !!this.state.isMobile;
-const s = Math.floor(p / 2);
-return {
-s0: s === 0, s1: s === 1, s2: s === 2, s3: s === 3, s4: s === 4,
-showL: !m || (p % 2 === 0),
-showR: !m || (p % 2 === 1),
-label: m ? ('Página ' + (p + 1) + ' / 10') : ('Páginas ' + (s + 1) + ' / 5'),
-prevOff: m ? p === 0 : s === 0,
-nextOff: m ? p === 9 : s === 4,
-prev: () => {
-const cur = this.state.page || 0;
-const mob = !!this.state.isMobile;
-this.setState({ page: Math.max(0, mob ? cur - 1 : (Math.floor(cur / 2) - 1) * 2) });
-},
-next: () => {
-const cur = this.state.page || 0;
-const mob = !!this.state.isMobile;
-this.setState({ page: Math.min(mob ? 9 : 8, mob ? cur + 1 : (Math.floor(cur / 2) + 1) * 2) });
-}
-};
-}
-}
+
+<script>
+(function () {
+  var ASSET_BASE = window.location.protocol === 'file:' ? '.' : '';
+
+  var ACTIVITIES = [
+    {
+      id: 2,
+      code: 'ACTIVIDAD 02',
+      title: 'Trabajo en grupo',
+      tilt: -1.3,
+      photos: [
+        '/Actividades/Actividad 2/Actividad 2_1.jpg',
+        '/Actividades/Actividad 2/Actividad 2_2.jpg',
+        '/Actividades/Actividad 2/Actividad 2_3.jpg'
+      ]
+    },
+    {
+      id: 3,
+      code: 'ACTIVIDAD 03',
+      title: 'Actividad en grupo',
+      tilt: 1.1,
+      photos: [
+        '/Actividades/actividad 3/actividad 3_1.jpg'
+      ]
+    },
+    {
+      id: 4,
+      code: 'ACTIVIDAD 04',
+      title: 'Exposición',
+      tilt: -0.8,
+      photos: [
+        '/Actividades/actividad 4/actividad 4_1.jpg'
+      ]
+    },
+    {
+      id: 5,
+      code: 'ACTIVIDAD 05',
+      title: 'Rapidez y Velocidad',
+      tilt: 1.4,
+      photos: [
+        '/Actividades/actividad 5/actividad 5_1.jpg',
+        '/Actividades/actividad 5/actividad 5_2.jpg'
+      ]
+    },
+    {
+      id: 6,
+      code: 'ACTIVIDAD 06',
+      title: 'Desplazamiento',
+      tilt: -1.1,
+      photos: [
+        '/Actividades/actividad 6/actividad 6(1)_1.jpg',
+        '/Actividades/actividad 6/actividad 6(1)_2.jpg',
+        '/Actividades/actividad 6/actividad 6(1)_3.jpg',
+        '/Actividades/actividad 6/actividad 6(1)_4.jpg',
+        '/Actividades/actividad 6/actividad 6(1)_5.jpg'
+      ]
+    },
+    {
+      id: 7,
+      code: 'ACTIVIDAD 07',
+      title: 'Conversiones',
+      tilt: 0.9,
+      photos: [
+        '/Actividades/actividad 7/actividad 7_1.jpg',
+        '/Actividades/actividad 7/actividad 7_2.jpg',
+        '/Actividades/actividad 7/actividad 7_3.jpg',
+        '/Actividades/actividad 7/actividad 7_4.jpg'
+      ]
+    },
+    {
+      id: 8,
+      code: 'ACTIVIDAD 08',
+      title: 'Simulador',
+      tilt: -1.4,
+      photos: [
+        '/Actividades/actividad 8/actividad 8_1.jpg',
+        '/Actividades/actividad 8/actividad 8_2.jpg'
+      ]
+    },
+    {
+      id: 10,
+      code: 'ACTIVIDAD 10',
+      title: 'Laboratorio',
+      tilt: 1.0,
+      photos: [
+        '/Actividades/actividad 10/actividad 10 Laboratorio _1.jpg',
+        '/Actividades/actividad 10/actividad 10 Laboratorio _2.jpg'
+      ]
+    }
+  ];
+
+  // Páginas del cuaderno: 0 = portada, 1..8 = actividades, 9 = cierre
+  var TOTAL_PAGES = ACTIVITIES.length + 2; // 10 páginas (5 pliegos)
+  var MAX_SPREAD = Math.floor((TOTAL_PAGES - 1) / 2); // 4
+
+  var state = {
+    page: 0,
+    isMobile: window.innerWidth <= 768,
+    focusedActivityId: null,
+    photoIndex: {},
+    lightboxActivityId: null
+  };
+
+  ACTIVITIES.forEach(function (act) {
+    state.photoIndex[act.id] = 0;
+  });
+
+  var spreadEl = document.getElementById('spread');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var indexBtn = document.getElementById('indexBtn');
+  var pageLabel = document.getElementById('pageLabel');
+
+  var indexModal = document.getElementById('indexModal');
+  var indexList = document.getElementById('indexList');
+  var closeIndexBtn = document.getElementById('closeIndexBtn');
+
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbCaption = document.getElementById('lbCaption');
+  var lbPrevBtn = document.getElementById('lbPrevBtn');
+  var lbNextBtn = document.getElementById('lbNextBtn');
+  var closeLbBtn = document.getElementById('closeLbBtn');
+  var lbStage = document.getElementById('lbStage');
+
+  function assetUrl(path) {
+    return encodeURI(ASSET_BASE + path);
+  }
+
+  function getActivityById(id) {
+    for (var i = 0; i < ACTIVITIES.length; i++) {
+      if (ACTIVITIES[i].id === id) return ACTIVITIES[i];
+    }
+    return null;
+  }
+
+  function getPageForActivityId(id) {
+    for (var i = 0; i < ACTIVITIES.length; i++) {
+      if (ACTIVITIES[i].id === id) return i + 1;
+    }
+    return null;
+  }
+
+  function getActivityForPage(pageIndex) {
+    if (pageIndex >= 1 && pageIndex <= ACTIVITIES.length) {
+      return ACTIVITIES[pageIndex - 1];
+    }
+    return null;
+  }
+
+  function parseRouteFromLocation() {
+    var path = window.location.pathname || '/';
+    var match = path.match(/\/actividad(?:\/|-)(\d+)\/?$/i);
+    var idStr = match ? match[1] : null;
+    if (!idStr) {
+      var params = new URLSearchParams(window.location.search);
+      idStr = params.get('actividad') || params.get('a');
+    }
+    if (!idStr) return { page: 0, activityId: null };
+    var idNum = parseInt(idStr, 10);
+    var page = getPageForActivityId(idNum);
+    if (page === null) return { page: 0, activityId: null };
+    return { page: page, activityId: idNum };
+  }
+
+  function updateDocumentTitle(activityId) {
+    var act = activityId ? getActivityById(activityId) : null;
+    document.title = act
+      ? 'Actividad ' + act.id + ': ' + act.title + ' · Bitácora de campo'
+      : 'Bitácora de campo';
+  }
+
+  function syncUrl(activityId, replaceOnly) {
+    var targetActivityId = activityId || null;
+    updateDocumentTitle(targetActivityId);
+    if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') return;
+    var nextPath = targetActivityId ? '/actividad/' + targetActivityId : '/';
+    if (window.location.pathname === nextPath && !window.location.search) return;
+    if (replaceOnly) {
+      window.history.replaceState({ activityId: targetActivityId }, '', nextPath);
+    } else {
+      window.history.pushState({ activityId: targetActivityId }, '', nextPath);
+    }
+  }
+
+  function preloadNextPhoto(act) {
+    if (!act || act.photos.length <= 1) return;
+    var current = state.photoIndex[act.id] || 0;
+    var nextIdx = (current + 1) % act.photos.length;
+    var img = new Image();
+    img.src = assetUrl(act.photos[nextIdx]);
+  }
+
+  function stepPhoto(activityId, delta) {
+    var act = getActivityById(activityId);
+    if (!act || act.photos.length <= 1) return;
+    var total = act.photos.length;
+    var cur = state.photoIndex[activityId] || 0;
+    state.photoIndex[activityId] = (cur + delta + total) % total;
+    render();
+    if (state.lightboxActivityId === activityId) {
+      renderLightbox();
+    }
+  }
+
+  function setPhoto(activityId, photoIdx) {
+    var act = getActivityById(activityId);
+    if (!act) return;
+    if (photoIdx < 0 || photoIdx >= act.photos.length) return;
+    state.photoIndex[activityId] = photoIdx;
+    render();
+    if (state.lightboxActivityId === activityId) {
+      renderLightbox();
+    }
+  }
+
+  function attachSwipe(el, onLeft, onRight) {
+    var startX = null;
+    var startY = null;
+    el.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    el.addEventListener('touchend', function (e) {
+      if (startX === null || startY === null || e.changedTouches.length !== 1) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null;
+      startY = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        if (dx < 0) onLeft();
+        else onRight();
+      }
+    }, { passive: true });
+  }
+
+  function buildCoverPage(sideClass) {
+    var pg = document.createElement('div');
+    pg.className = 'pg ' + sideClass + ' cover';
+
+    var label = document.createElement('div');
+    label.className = 'label';
+
+    var topCode = document.createElement('div');
+    topCode.className = 'fn';
+    topCode.textContent = 'CUADERNO DE CIENCIAS · VOL. 3';
+
+    var title = document.createElement('div');
+    title.className = 'ct';
+    title.textContent = 'Bitácora de campo';
+
+    var sub = document.createElement('div');
+    sub.className = 'cs';
+    sub.textContent = 'Registro de actividades';
+
+    var count = document.createElement('div');
+    count.className = 'fd';
+    count.textContent = ACTIVITIES.length + ' capítulos · pasa la página →';
+
+    var actions = document.createElement('div');
+    actions.className = 'cover-actions';
+
+    var openChaptersBtn = document.createElement('button');
+    openChaptersBtn.type = 'button';
+    openChaptersBtn.className = 'cover-link';
+    openChaptersBtn.textContent = 'Ver capítulos';
+    openChaptersBtn.addEventListener('click', openIndexModal);
+
+    var startBtn = document.createElement('button');
+    startBtn.type = 'button';
+    startBtn.className = 'cover-link';
+    startBtn.textContent = 'Ir a Actividad 2 →';
+    startBtn.addEventListener('click', function () {
+      goToActivity(ACTIVITIES[0].id, false);
+    });
+
+    actions.appendChild(openChaptersBtn);
+    actions.appendChild(startBtn);
+
+    label.appendChild(topCode);
+    label.appendChild(title);
+    label.appendChild(sub);
+    label.appendChild(count);
+    label.appendChild(actions);
+    pg.appendChild(label);
+    return pg;
+  }
+
+  function buildActivityPage(act, pageIndex, sideClass) {
+    var pg = document.createElement('div');
+    pg.className = 'pg ' + sideClass;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'wrap' + (state.focusedActivityId === act.id ? ' is-focused' : '');
+
+    var figure = document.createElement('figure');
+    figure.className = 'p';
+    var angle = state.isMobile ? act.tilt * 0.45 : act.tilt;
+    figure.style.transform = 'rotate(' + angle + 'deg)';
+
+    var ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.title = 'Clic para ampliar imagen';
+
+    var photoIdx = state.photoIndex[act.id] || 0;
+    var totalPhotos = act.photos.length;
+
+    var img = document.createElement('img');
+    img.className = 'photo-img';
+    img.src = assetUrl(act.photos[photoIdx]);
+    img.alt = act.code + ' — ' + act.title + ' (foto ' + (photoIdx + 1) + ' de ' + totalPhotos + ')';
+    img.decoding = 'async';
+    img.draggable = false;
+    ph.appendChild(img);
+
+    var topBar = document.createElement('div');
+    topBar.className = 'ph-top-bar';
+
+    if (totalPhotos > 1) {
+      var counter = document.createElement('span');
+      counter.className = 'ph-pill';
+      counter.textContent = (photoIdx + 1) + ' / ' + totalPhotos;
+      topBar.appendChild(counter);
+    }
+
+    var zoomBtn = document.createElement('button');
+    zoomBtn.type = 'button';
+    zoomBtn.className = 'ph-pill ph-zoom';
+    zoomBtn.setAttribute('aria-label', 'Ampliar imagen de ' + act.title);
+    zoomBtn.textContent = '🔍 Ampliar';
+    zoomBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openLightbox(act.id);
+    });
+    topBar.appendChild(zoomBtn);
+    ph.appendChild(topBar);
+
+    ph.addEventListener('click', function () {
+      openLightbox(act.id);
+    });
+
+    if (totalPhotos > 1) {
+      var prevPhotoBtn = document.createElement('button');
+      prevPhotoBtn.type = 'button';
+      prevPhotoBtn.className = 'ph-nav prev';
+      prevPhotoBtn.setAttribute('aria-label', 'Foto anterior');
+      prevPhotoBtn.textContent = '‹';
+      prevPhotoBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        stepPhoto(act.id, -1);
+      });
+
+      var nextPhotoBtn = document.createElement('button');
+      nextPhotoBtn.type = 'button';
+      nextPhotoBtn.className = 'ph-nav next';
+      nextPhotoBtn.setAttribute('aria-label', 'Foto siguiente');
+      nextPhotoBtn.textContent = '›';
+      nextPhotoBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        stepPhoto(act.id, 1);
+      });
+
+      ph.appendChild(prevPhotoBtn);
+      ph.appendChild(nextPhotoBtn);
+
+      attachSwipe(ph, function () {
+        stepPhoto(act.id, 1);
+      }, function () {
+        stepPhoto(act.id, -1);
+      });
+    }
+
+    var meta = document.createElement('div');
+    meta.className = 'card-meta';
+
+    var titles = document.createElement('div');
+    titles.className = 'card-titles';
+
+    var fn = document.createElement('div');
+    fn.className = 'fn';
+    fn.textContent = act.code;
+
+    var ft = document.createElement('div');
+    ft.className = 'ft';
+    ft.textContent = act.title;
+
+    titles.appendChild(fn);
+    titles.appendChild(ft);
+    meta.appendChild(titles);
+
+    if (totalPhotos > 1) {
+      var thumbs = document.createElement('div');
+      thumbs.className = 'thumbs';
+      for (var t = 0; t < totalPhotos; t++) {
+        (function (idx) {
+          var dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'thumb-dot' + (idx === photoIdx ? ' active' : '');
+          dot.textContent = String(idx + 1);
+          dot.setAttribute('aria-label', 'Ver foto ' + (idx + 1) + ' de ' + totalPhotos);
+          dot.addEventListener('click', function () {
+            setPhoto(act.id, idx);
+          });
+          thumbs.appendChild(dot);
+        })(t);
+      }
+      meta.appendChild(thumbs);
+    }
+
+    figure.appendChild(ph);
+    figure.appendChild(meta);
+    wrap.appendChild(figure);
+
+    var num = document.createElement('div');
+    num.className = 'num';
+    num.textContent = String(pageIndex);
+
+    pg.appendChild(wrap);
+    pg.appendChild(num);
+
+    preloadNextPhoto(act);
+    return pg;
+  }
+
+  function buildEndPage(sideClass) {
+    var pg = document.createElement('div');
+    pg.className = 'pg ' + sideClass;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'end-wrap';
+
+    var title = document.createElement('div');
+    title.className = 'ct';
+    title.style.fontSize = 'clamp(40px,4vw,54px)';
+    title.textContent = 'Fin del registro';
+
+    var sub = document.createElement('div');
+    sub.className = 'fd';
+    sub.textContent = 'Selecciona cualquier capítulo para consultarlo directamente:';
+
+    var grid = document.createElement('div');
+    grid.className = 'end-list';
+
+    ACTIVITIES.forEach(function (act) {
+      var item = document.createElement('a');
+      item.className = 'end-item';
+      item.href = '/actividad/' + act.id;
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        goToActivity(act.id, false);
+      });
+
+      var itemNum = document.createElement('span');
+      itemNum.className = 'end-item-num';
+      itemNum.textContent = act.code + ' · ' + act.photos.length + (act.photos.length === 1 ? ' foto' : ' fotos');
+
+      var itemTitle = document.createElement('span');
+      itemTitle.className = 'end-item-title';
+      itemTitle.textContent = act.title;
+
+      item.appendChild(itemNum);
+      item.appendChild(itemTitle);
+      grid.appendChild(item);
+    });
+
+    var homeBtn = document.createElement('button');
+    homeBtn.type = 'button';
+    homeBtn.className = 'btn';
+    homeBtn.style.marginTop = '8px';
+    homeBtn.textContent = '← Volver a la portada';
+    homeBtn.addEventListener('click', function () {
+      goToCover(false);
+    });
+
+    wrap.appendChild(title);
+    wrap.appendChild(sub);
+    wrap.appendChild(grid);
+    wrap.appendChild(homeBtn);
+    pg.appendChild(wrap);
+    return pg;
+  }
+
+  function buildPageElement(pageIndex, sideClass) {
+    if (pageIndex === 0) return buildCoverPage(sideClass);
+    if (pageIndex === TOTAL_PAGES - 1) return buildEndPage(sideClass);
+    var act = getActivityForPage(pageIndex);
+    return buildActivityPage(act, pageIndex, sideClass);
+  }
+
+  function render() {
+    spreadEl.innerHTML = '';
+
+    if (state.isMobile) {
+      var sideClass = state.page % 2 === 0 ? 'pgL' : 'pgR';
+      spreadEl.appendChild(buildPageElement(state.page, sideClass));
+      var currentAct = getActivityForPage(state.page);
+      pageLabel.textContent = currentAct
+        ? currentAct.code + ' · ' + (state.page + 1) + ' / ' + TOTAL_PAGES
+        : 'Página ' + (state.page + 1) + ' / ' + TOTAL_PAGES;
+      prevBtn.disabled = state.page === 0;
+      nextBtn.disabled = state.page === TOTAL_PAGES - 1;
+    } else {
+      var s = Math.floor(state.page / 2);
+      var leftPage = s * 2;
+      var rightPage = leftPage + 1;
+      spreadEl.appendChild(buildPageElement(leftPage, 'pgL'));
+      if (rightPage < TOTAL_PAGES) {
+        spreadEl.appendChild(buildPageElement(rightPage, 'pgR'));
+      }
+      pageLabel.textContent = 'Páginas ' + (s + 1) + ' / ' + (MAX_SPREAD + 1);
+      prevBtn.disabled = s === 0;
+      nextBtn.disabled = s === MAX_SPREAD;
+    }
+  }
+
+  function goToCover(replaceOnly) {
+    state.page = 0;
+    state.focusedActivityId = null;
+    syncUrl(null, replaceOnly);
+    render();
+  }
+
+  function goToActivity(activityId, replaceOnly) {
+    var page = getPageForActivityId(activityId);
+    if (page === null) {
+      goToCover(replaceOnly);
+      return;
+    }
+    state.page = page;
+    state.focusedActivityId = activityId;
+    syncUrl(activityId, replaceOnly);
+    render();
+  }
+
+  function navigateSpreadOrPage(delta) {
+    if (state.isMobile) {
+      var nextPage = Math.max(0, Math.min(TOTAL_PAGES - 1, state.page + delta));
+      if (nextPage === state.page) return;
+      state.page = nextPage;
+      var act = getActivityForPage(nextPage);
+      state.focusedActivityId = act ? act.id : null;
+      syncUrl(state.focusedActivityId, false);
+      render();
+      return;
+    }
+
+    var currentSpread = Math.floor(state.page / 2);
+    var nextSpread = Math.max(0, Math.min(MAX_SPREAD, currentSpread + delta));
+    if (nextSpread === currentSpread) return;
+
+    var leftPage = nextSpread * 2;
+    state.page = leftPage;
+    var leftAct = getActivityForPage(leftPage);
+    state.focusedActivityId = leftAct ? leftAct.id : null;
+    syncUrl(nextSpread === 0 ? null : state.focusedActivityId, false);
+    render();
+  }
+
+  function renderIndexModal() {
+    indexList.innerHTML = '';
+
+    var coverRow = document.createElement('a');
+    coverRow.className = 'index-row' + (state.page === 0 ? ' active' : '');
+    coverRow.href = '/';
+    coverRow.addEventListener('click', function (e) {
+      e.preventDefault();
+      closeIndexModal();
+      goToCover(false);
+    });
+    coverRow.innerHTML =
+      '<span class="index-row-main"><span class="index-code">PORTADA</span><span class="index-name">Bitácora de campo</span></span>' +
+      '<span class="index-count">Inicio</span>';
+    indexList.appendChild(coverRow);
+
+    ACTIVITIES.forEach(function (act) {
+      var actPage = getPageForActivityId(act.id);
+      var isCurrent = state.isMobile
+        ? state.page === actPage
+        : state.focusedActivityId === act.id || Math.floor(state.page / 2) === Math.floor(actPage / 2);
+
+      var row = document.createElement('a');
+      row.className = 'index-row' + (isCurrent ? ' active' : '');
+      row.href = '/actividad/' + act.id;
+      row.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeIndexModal();
+        goToActivity(act.id, false);
+      });
+
+      var main = document.createElement('span');
+      main.className = 'index-row-main';
+
+      var code = document.createElement('span');
+      code.className = 'index-code';
+      code.textContent = act.code;
+
+      var name = document.createElement('span');
+      name.className = 'index-name';
+      name.textContent = act.title;
+
+      var count = document.createElement('span');
+      count.className = 'index-count';
+      count.textContent = act.photos.length + (act.photos.length === 1 ? ' foto' : ' fotos');
+
+      main.appendChild(code);
+      main.appendChild(name);
+      row.appendChild(main);
+      row.appendChild(count);
+      indexList.appendChild(row);
+    });
+  }
+
+  function openIndexModal() {
+    renderIndexModal();
+    indexModal.classList.add('open');
+  }
+
+  function closeIndexModal() {
+    indexModal.classList.remove('open');
+  }
+
+  function renderLightbox() {
+    var act = getActivityById(state.lightboxActivityId);
+    if (!act) return;
+    var idx = state.photoIndex[act.id] || 0;
+    var total = act.photos.length;
+    lbImg.src = assetUrl(act.photos[idx]);
+    lbImg.alt = act.code + ' — ' + act.title;
+    lbCaption.textContent = total > 1
+      ? act.code + ' · ' + act.title + ' (Foto ' + (idx + 1) + ' de ' + total + ')'
+      : act.code + ' · ' + act.title;
+    lbPrevBtn.style.display = total > 1 ? 'flex' : 'none';
+    lbNextBtn.style.display = total > 1 ? 'flex' : 'none';
+  }
+
+  function openLightbox(activityId) {
+    state.lightboxActivityId = activityId;
+    renderLightbox();
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    state.lightboxActivityId = null;
+    lightbox.classList.remove('open');
+    lbImg.removeAttribute('src');
+  }
+
+  prevBtn.addEventListener('click', function () {
+    navigateSpreadOrPage(-1);
+  });
+  nextBtn.addEventListener('click', function () {
+    navigateSpreadOrPage(1);
+  });
+  indexBtn.addEventListener('click', openIndexModal);
+  closeIndexBtn.addEventListener('click', closeIndexModal);
+  indexModal.addEventListener('click', function (e) {
+    if (e.target === indexModal) closeIndexModal();
+  });
+
+  closeLbBtn.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox || e.target === lbStage) closeLightbox();
+  });
+  lbPrevBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (state.lightboxActivityId !== null) stepPhoto(state.lightboxActivityId, -1);
+  });
+  lbNextBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (state.lightboxActivityId !== null) stepPhoto(state.lightboxActivityId, 1);
+  });
+  attachSwipe(lbStage, function () {
+    if (state.lightboxActivityId !== null) stepPhoto(state.lightboxActivityId, 1);
+  }, function () {
+    if (state.lightboxActivityId !== null) stepPhoto(state.lightboxActivityId, -1);
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (state.lightboxActivityId !== null) {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') stepPhoto(state.lightboxActivityId, -1);
+      else if (e.key === 'ArrowRight') stepPhoto(state.lightboxActivityId, 1);
+      return;
+    }
+    if (indexModal.classList.contains('open')) {
+      if (e.key === 'Escape') closeIndexModal();
+      return;
+    }
+    if (e.key === 'ArrowLeft') navigateSpreadOrPage(-1);
+    else if (e.key === 'ArrowRight') navigateSpreadOrPage(1);
+  });
+
+  window.addEventListener('resize', function () {
+    var m = window.innerWidth <= 768;
+    if (m !== state.isMobile) {
+      state.isMobile = m;
+      if (!m && state.focusedActivityId) {
+        var focusedPage = getPageForActivityId(state.focusedActivityId);
+        if (focusedPage !== null) state.page = focusedPage;
+      }
+      render();
+    }
+  });
+
+  window.addEventListener('popstate', function () {
+    var route = parseRouteFromLocation();
+    state.page = route.page;
+    state.focusedActivityId = route.activityId;
+    updateDocumentTitle(route.activityId);
+    render();
+  });
+
+  // Inicialización desde la URL
+  var initial = parseRouteFromLocation();
+  state.page = initial.page;
+  state.focusedActivityId = initial.activityId;
+  syncUrl(initial.activityId, true);
+  render();
+})();
 </script>
 </body>
 </html>

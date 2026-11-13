@@ -1,21 +1,21 @@
-# Bitácora de campo — design reference
+# Bitácora de campo
 
-This is a design mockup created in a visual design tool, exported as a
-standalone page. Treat it as a REFERENCE MOCKUP, not production code:
-the markup and inline styles carry the design's precise values — colors,
-font sizes, spacing, radii, shadows, layout — which an implementation
-should replicate faithfully in its own components and styling system
-rather than copy wholesale.
+Cuaderno digital interactivo organizado por capítulos para cada actividad, con rutas limpias pensadas para generar un código QR por actividad.
 
-## Contents
+## Estructura
 
-- `Main.dc.html` — the artboard (a Design Component: an `<x-dc>`
-  template + a small logic class). The values to replicate live in its
-  inline `style="…"` attributes and the `<helmet><style>` block.
-- `support.js`, `vendor/react*.js` — the runtime that renders the
-  component in a browser; not part of the design.
+- `index.html`: aplicación autocontenida (HTML, CSS y JS) con la bitácora, galería de fotos por actividad, visor ampliado e índice de capítulos.
+- `vercel.json`: reescritura de rutas limpias (`/`, `/actividad/:id`, `/actividad-:id`) hacia `/index.html`.
+- `Actividades/`: imágenes organizadas por carpeta para las actividades `2`, `3`, `4`, `5`, `6`, `7`, `8` y `10`.
 
-## Viewing
+## Rutas limpias por actividad (QR)
 
-Serve the folder (e.g. `python3 -m http.server`) and open `Main.dc.html`;
-some browsers block the scripts over file://.
+- `/` — Portada
+- `/actividad/2` — Trabajo en grupo
+- `/actividad/3` — Actividad en grupo
+- `/actividad/4` — Exposición
+- `/actividad/5` — Rapidez y Velocidad
+- `/actividad/6` — Desplazamiento
+- `/actividad/7` — Conversiones
+- `/actividad/8` — Simulador
+- `/actividad/10` — Laboratorio
